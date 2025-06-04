@@ -1,23 +1,24 @@
 # Maintainer: Thomas Ludwig <business at tludwig dot dev>
 
 pkgname=teb-obs
-pkgver=31.0.3
+pkgver=31.1.0
 pkgrel=1
 pkgdesc="Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc."
 arch=('x86_64')
 url="https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation"
 license=('GPL-2.0-or-later')
-_obsversion="31.0.3-enhanced-broadcasting-v51"
-_obsversionbranch="release/v51"
+_obsversion="31.1.0-beta1-enhanced-broadcasting-v53"
+_obsversionbranch="release/v53"
 _qtver=6.6.2
 _libajantv2ver=17.0.1
-_libdatachannelver=0.21
+_libdatachannelver=0.22
 _mbedtlsver=3.6.1
-_pythonver=3.13
+_pythonver=3.13.1
 depends=(
   "alsa-lib" # Deps of ALSA plugin and CEF
   "curl" # Deps of OBS Studio and rtmp-services plugin
-  "ffmpeg>=7" # Deps of OBS Studio and FFmpeg plugin
+  "extra-cmake-modules" # Extra modules and scripts for CMake
+  "ffmpeg>=7.1" # Deps of OBS Studio and FFmpeg plugin
   "fontconfig" # Deps of Freetype2 plugin
   "freetype2" # Deps of Freetype2 plugin
   "gcc-libs" # Deps of any C++ related binary
@@ -49,12 +50,14 @@ depends=(
   "zlib" # Deps of libobs
 
   # Deps of CEF
-  "at-spi2-core" "dbus" "expat" "libcups" "libdrm" "libxdamage"
-  "libxext" "libxfixes" "libxrandr" "mesa" "nspr" "nss"
+  "at-spi2-core" "cairo" "dbus" "expat" "libcups" "libdrm"
+  "libxdamage" "libxext" "libxfixes" "libxrandr" "mesa" "nspr"
+  "nss" "pango"
 )
 makedepends=(
   "asio" # Deps of Websocket plugin (headers-only lib)
   "cmake"
+  "ffnvcodec-headers" # Deps of NVENC plugin (headers-only lib)
   "jack" # Deps of JACK plugin
   "git"
   "uthash" # Deps of libobs
@@ -65,6 +68,7 @@ makedepends=(
   "nlohmann-json" # Deps of Websocket plugin (headers-only lib)
   "libvpl" # Deps of QSV plugin
   "python>=$_pythonver" # Deps of Scripting plugin
+  "sndio" # Deps of sndio plugin
   "swig" # Deps of Scripting plugin
   "systemd-libs" # Deps of V4L2 plugin
   "v4l-utils" # Deps of V4L2 plugin
@@ -82,6 +86,7 @@ optdepends=(
   "swig: Scripting"
   "luajit: Lua scripting"
   "python>=$_pythonver: Python scripting"
+  "sndio: Sndio input client"
   "v4l-utils: V4L2 support"
   "systemd-libs: V4L2 support"
   "v4l2loopback-dkms: V4L2 virtual camera output"
@@ -89,14 +94,14 @@ optdepends=(
   "libajantv2>=$_libajantv2ver: AJA support"
 )
 provides=("obs-studio=$pkgver" "obs-vst" "obs-websocket" "obs-browser")
-conflicts=("obs-studio" "obs-websocket" "obs-browser" "obs-linuxbrowser" "obs-studio-tytan652" "obs-studio-git" "obs-studio-amf" "obs-studio-browser")
+conflicts=("obs-studio" "obs-websocket" "obs-browser" "obs-linuxbrowser" "obs-studio-tytan652" "obs-studio-git" "obs-studio-amf" "obs-studio-browser" "obs-vst")
 source=(
   "obs-studio::git+https://github.com/amazon-contributing/upstreaming-to-obs-studio#branch=$_obsversionbranch"
   "obs-browser::git+https://github.com/obsproject/obs-browser.git"
   "obs-websocket::git+https://github.com/obsproject/obs-websocket.git"
   "ftl-sdk::git+https://github.com/microsoft/ftl-sdk.git"
-  "supported-nv-codec-headers::git+https://github.com/FFmpeg/nv-codec-headers.git#tag=n12.2.72.0"
-  "https://cdn-fastly.obsproject.com/downloads/cef_binary_6533_linux_x86_64_v3.tar.xz"
+  "https://cdn-fastly.obsproject.com/downloads/cef_binary_6533_linux_x86_64.tar.xz"
+  #"0004-Max_tls_v1_2_mbedtls_3_6_0_workaround.patch"
 )
 sha256sums=(
   "SKIP"
@@ -104,7 +109,7 @@ sha256sums=(
   "SKIP"
   "SKIP"
   "SKIP"
-  "SKIP"
+  #"c397a8da291547c757a42f7727a5e6650aa70e6e531f2ef150356eb9eb1fb49c"
 )
 
 prepare() {
@@ -113,28 +118,25 @@ prepare() {
   git config submodule.plugins/obs-websocket.url $srcdir/obs-websocket
   git config submodule.plugins/obs-outputs/ftl-sdk.url $srcdir/ftl-sdk
   git -c protocol.file.allow=always submodule update
-
-  cd "$srcdir"
-
-  make PREFIX="$srcdir/nv-prefix" -C supported-nv-codec-headers install
 }
 
 build() {
-  export PKG_CONFIG_PATH="${srcdir}/nv-prefix/lib/pkgconfig"
 
   cmake -B build -S obs-studio \
-    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DOBS_CMAKE_VERSION=3 \
     -DENABLE_LIBFDK=ON \
     -DENABLE_JACK=ON \
+    -DENABLE_SNDIO=ON \
     -DENABLE_BROWSER=ON \
+    -DENABLE_FFMPEG=ON \
+    -DENABLE_NVENC=ON \
     -DCEF_ROOT_DIR="$srcdir/cef_binary_6533_linux_x86_64" \
     -DOBS_VERSION_OVERRIDE="${_obsversion}" \
+    -DOBS_VERSION_OVERRIDE="$pkgver" \
     -DOBS_COMPILE_DEPRECATION_AS_WARNING=ON \
-    -Wno-dev \
-    -DCMAKE_INCLUDE_PATH="${srcdir}/nv-prefix/include:/usr/include"
+    -Wno-dev
 
   cmake --build build
 }

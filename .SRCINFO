@@ -1,29 +1,32 @@
 pkgbase = teb-obs
 	pkgdesc = Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc.
-	pkgver = 31.0.3
+	pkgver = 31.1.0
 	pkgrel = 1
 	url = https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation
 	arch = x86_64
 	license = GPL-2.0-or-later
 	makedepends = asio
 	makedepends = cmake
+	makedepends = ffnvcodec-headers
 	makedepends = jack
 	makedepends = git
 	makedepends = uthash
 	makedepends = libajantv2>=17.0.1
-	makedepends = libdatachannel>=0.21
+	makedepends = libdatachannel>=0.22
 	makedepends = libfdk-aac
 	makedepends = luajit
 	makedepends = nlohmann-json
 	makedepends = libvpl
-	makedepends = python>=3.13
+	makedepends = python>=3.13.1
+	makedepends = sndio
 	makedepends = swig
 	makedepends = systemd-libs
 	makedepends = v4l-utils
 	makedepends = websocketpp
 	depends = alsa-lib
 	depends = curl
-	depends = ffmpeg>=7
+	depends = extra-cmake-modules
+	depends = ffmpeg>=7.1
 	depends = fontconfig
 	depends = freetype2
 	depends = gcc-libs
@@ -54,6 +57,7 @@ pkgbase = teb-obs
 	depends = x264
 	depends = zlib
 	depends = at-spi2-core
+	depends = cairo
 	depends = dbus
 	depends = expat
 	depends = libcups
@@ -65,6 +69,7 @@ pkgbase = teb-obs
 	depends = mesa
 	depends = nspr
 	depends = nss
+	depends = pango
 	optdepends = jack: JACK support
 	optdepends = libfdk-aac: FDK AAC codec support
 	optdepends = libvpl: QSV encoder support
@@ -75,13 +80,14 @@ pkgbase = teb-obs
 	optdepends = libva-mesa-driver: VAAPI encoder support
 	optdepends = swig: Scripting
 	optdepends = luajit: Lua scripting
-	optdepends = python>=3.13: Python scripting
+	optdepends = python>=3.13.1: Python scripting
+	optdepends = sndio: Sndio input client
 	optdepends = v4l-utils: V4L2 support
 	optdepends = systemd-libs: V4L2 support
 	optdepends = v4l2loopback-dkms: V4L2 virtual camera output
-	optdepends = libdatachannel>=0.21: WHIP Support
+	optdepends = libdatachannel>=0.22: WHIP Support
 	optdepends = libajantv2>=17.0.1: AJA support
-	provides = obs-studio=31.0.3
+	provides = obs-studio=31.1.0
 	provides = obs-vst
 	provides = obs-websocket
 	provides = obs-browser
@@ -93,13 +99,12 @@ pkgbase = teb-obs
 	conflicts = obs-studio-git
 	conflicts = obs-studio-amf
 	conflicts = obs-studio-browser
-	source = obs-studio::git+https://github.com/amazon-contributing/upstreaming-to-obs-studio#branch=release/v51
+	conflicts = obs-vst
+	source = obs-studio::git+https://github.com/amazon-contributing/upstreaming-to-obs-studio#branch=release/v53
 	source = obs-browser::git+https://github.com/obsproject/obs-browser.git
 	source = obs-websocket::git+https://github.com/obsproject/obs-websocket.git
 	source = ftl-sdk::git+https://github.com/microsoft/ftl-sdk.git
-	source = supported-nv-codec-headers::git+https://github.com/FFmpeg/nv-codec-headers.git#tag=n12.2.72.0
-	source = https://cdn-fastly.obsproject.com/downloads/cef_binary_6533_linux_x86_64_v3.tar.xz
-	sha256sums = SKIP
+	source = https://cdn-fastly.obsproject.com/downloads/cef_binary_6533_linux_x86_64.tar.xz
 	sha256sums = SKIP
 	sha256sums = SKIP
 	sha256sums = SKIP
