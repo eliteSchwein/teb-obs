@@ -1,14 +1,14 @@
 # Maintainer: Thomas Ludwig <business at tludwig dot dev>
 
 pkgname=teb-obs
-pkgver=31.1.0
-pkgrel=2
+pkgver=31.1.2
+pkgrel=1
 pkgdesc="Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc."
 arch=('x86_64')
 url="https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation"
 license=('GPL-2.0-or-later')
-_obsversion="31.1.0-rc1-enhanced-broadcasting-v54"
-_obsversionbranch="release/v54"
+_obsversion="31.1.2-enhanced-broadcasting-v56"
+_obsversionbranch="release/v56"
 _qtver=6.6.2
 _libajantv2ver=17.0.1
 _libdatachannelver=0.22
