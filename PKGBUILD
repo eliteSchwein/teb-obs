@@ -2,7 +2,7 @@
 
 pkgname=teb-obs
 pkgver=31.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc."
 arch=('x86_64')
 url="https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation"
