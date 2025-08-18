@@ -1,0 +1,10 @@
+--- a/plugins/CMakeLists.txt	(revision a4c10c2544c473bc4a3e59193be9e4234ebcc32a)
++++ b/plugins/CMakeLists.txt	(date 1755532601385)
+@@ -84,6 +84,7 @@
+ add_obs_plugin(rtmp-services)
+ add_obs_plugin(sndio PLATFORMS LINUX FREEBSD OPENBSD)
+ add_obs_plugin(text-freetype2)
++add_obs_plugin(obs-vertical-canvas)
+ add_obs_plugin(vlc-video WITH_MESSAGE)
+ add_obs_plugin(win-capture PLATFORMS WINDOWS)
+ add_obs_plugin(win-dshow PLATFORMS WINDOWS)

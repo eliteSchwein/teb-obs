@@ -101,7 +101,8 @@ source=(
   "obs-websocket::git+https://github.com/obsproject/obs-websocket.git"
   "ftl-sdk::git+https://github.com/microsoft/ftl-sdk.git"
   "https://cdn-fastly.obsproject.com/downloads/cef_binary_6533_linux_x86_64.tar.xz"
-  #"0004-Max_tls_v1_2_mbedtls_3_6_0_workaround.patch"
+  "obs-vertical-canvas::git+https://github.com/Aitum/obs-vertical-canvas.git"
+  "add_vertical_canvas.patch"
 )
 sha256sums=(
   "SKIP"
@@ -109,7 +110,8 @@ sha256sums=(
   "SKIP"
   "SKIP"
   "SKIP"
-  #"c397a8da291547c757a42f7727a5e6650aa70e6e531f2ef150356eb9eb1fb49c"
+  "SKIP"
+  "SKIP"
 )
 
 prepare() {
@@ -117,11 +119,16 @@ prepare() {
   git config submodule.plugins/obs-browser.url $srcdir/obs-browser
   git config submodule.plugins/obs-websocket.url $srcdir/obs-websocket
   git config submodule.plugins/obs-outputs/ftl-sdk.url $srcdir/ftl-sdk
+
+  mkdir -p plugins/obs-vertical-canvas
+  cp -r "$srcdir/obs-vertical-canvas"/* plugins/obs-vertical-canvas/
+
   git -c protocol.file.allow=always submodule update
+
+  patch -Np1 -i "$srcdir/add_vertical_canvas.patch"
 }
 
 build() {
-
   cmake -B build -S obs-studio \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -136,7 +143,8 @@ build() {
     -DOBS_VERSION_OVERRIDE="${_obsversion}" \
     -DOBS_VERSION_OVERRIDE="$pkgver" \
     -DOBS_COMPILE_DEPRECATION_AS_WARNING=ON \
-    -Wno-dev
+    -Wno-dev \
+    -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations"
 
   cmake --build build
 }
