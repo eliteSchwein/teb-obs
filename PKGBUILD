@@ -1,19 +1,19 @@
 # Maintainer: Thomas Ludwig <business at tludwig dot dev>
 
 pkgname=teb-obs
-pkgver=31.1.2
-pkgrel=3
+pkgver=32.0.0
+pkgrel=1
 pkgdesc="Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc."
 arch=('x86_64')
 url="https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation"
 license=('GPL-2.0-or-later')
-_obsversion="31.1.2-enhanced-broadcasting-v57"
-_obsversionbranch="release/v57"
+_obsversion="32.0.0-beta2-enhanced-broadcasting-v58"
+_obsversionbranch="release/v58"
 _qtver=6.6.2
 _libajantv2ver=17.0.1
 _libdatachannelver=0.22
 _mbedtlsver=3.6.1
-_pythonver=3.13.1
+_pythonver=3.13
 depends=(
   "alsa-lib" # Deps of ALSA plugin and CEF
   "curl" # Deps of OBS Studio and rtmp-services plugin
@@ -61,6 +61,7 @@ makedepends=(
   "jack" # Deps of JACK plugin
   "git"
   "uthash" # Deps of libobs
+  "simde" # Header-only; required by libobs (FindSIMDe.cmake)
   "libajantv2>=$_libajantv2ver" # Deps of AJA plugins
   "libdatachannel>=$_libdatachannelver" # Deps of WebRTC plugin (NICE variant like the Flatpak)
   "libfdk-aac" # Deps of FDK AAC plugin
@@ -102,9 +103,11 @@ source=(
   "ftl-sdk::git+https://github.com/microsoft/ftl-sdk.git"
   "https://cdn-fastly.obsproject.com/downloads/cef_binary_6533_linux_x86_64.tar.xz"
   "obs-vertical-canvas::git+https://github.com/Aitum/obs-vertical-canvas.git"
-  "add_vertical_canvas.patch"
+  "obs-source-profiler::git+https://github.com/exeldro/obs-source-profiler.git"
+  "add_plugins.patch"
 )
 sha256sums=(
+  "SKIP"
   "SKIP"
   "SKIP"
   "SKIP"
@@ -123,9 +126,12 @@ prepare() {
   mkdir -p plugins/obs-vertical-canvas
   cp -r "$srcdir/obs-vertical-canvas"/* plugins/obs-vertical-canvas/
 
+  mkdir -p plugins/source-profiler
+  cp -r "$srcdir/obs-source-profiler"/* plugins/source-profiler/
+
   git -c protocol.file.allow=always submodule update
 
-  patch -Np1 -i "$srcdir/add_vertical_canvas.patch"
+  patch -Np1 -i "$srcdir/add_plugins.patch"
 }
 
 build() {
@@ -137,11 +143,9 @@ build() {
     -DENABLE_JACK=ON \
     -DENABLE_SNDIO=ON \
     -DENABLE_BROWSER=ON \
-    -DENABLE_FFMPEG=ON \
     -DENABLE_NVENC=ON \
     -DCEF_ROOT_DIR="$srcdir/cef_binary_6533_linux_x86_64" \
     -DOBS_VERSION_OVERRIDE="${_obsversion}" \
-    -DOBS_VERSION_OVERRIDE="$pkgver" \
     -DOBS_COMPILE_DEPRECATION_AS_WARNING=ON \
     -Wno-dev \
     -DCMAKE_CXX_FLAGS="-Wno-error=deprecated-declarations"
