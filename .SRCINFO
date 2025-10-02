@@ -1,7 +1,7 @@
 pkgbase = teb-obs
 	pkgdesc = Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc.
-	pkgver = 32.0.0
-	pkgrel = 2
+	pkgver = 32.0.1
+	pkgrel = 1
 	url = https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation
 	arch = x86_64
 	license = GPL-2.0-or-later
@@ -12,7 +12,7 @@ pkgbase = teb-obs
 	makedepends = git
 	makedepends = uthash
 	makedepends = simde
-	makedepends = libajantv2>=17.0.1
+	makedepends = libajantv2>=17.5.0
 	makedepends = libdatachannel>=0.22
 	makedepends = libfdk-aac
 	makedepends = luajit
@@ -87,8 +87,8 @@ pkgbase = teb-obs
 	optdepends = systemd-libs: V4L2 support
 	optdepends = v4l2loopback-dkms: V4L2 virtual camera output
 	optdepends = libdatachannel>=0.22: WHIP Support
-	optdepends = libajantv2>=17.0.1: AJA support
-	provides = obs-studio=32.0.0
+	optdepends = libajantv2>=17.5.0: AJA support
+	provides = obs-studio=32.0.1
 	provides = obs-vst
 	provides = obs-websocket
 	provides = obs-browser
@@ -101,7 +101,7 @@ pkgbase = teb-obs
 	conflicts = obs-studio-amf
 	conflicts = obs-studio-browser
 	conflicts = obs-vst
-	source = obs-studio::git+https://github.com/amazon-contributing/upstreaming-to-obs-studio#branch=release/v59
+	source = obs-studio::git+https://github.com/amazon-contributing/upstreaming-to-obs-studio#branch=release/v60
 	source = obs-browser::git+https://github.com/obsproject/obs-browser.git
 	source = obs-websocket::git+https://github.com/obsproject/obs-websocket.git
 	source = ftl-sdk::git+https://github.com/microsoft/ftl-sdk.git
