@@ -1,7 +1,7 @@
 pkgbase = teb-obs
 	pkgdesc = Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc.
 	pkgver = 32.0.1
-	pkgrel = 2
+	pkgrel = 3
 	url = https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation
 	arch = x86_64
 	license = GPL-2.0-or-later
@@ -78,7 +78,7 @@ pkgbase = teb-obs
 	optdepends = libva-intel-driver: VAAPI encoder support (<= Haswell)
 	optdepends = libva-mesa-driver: VAAPI encoder support
 	optdepends = v4l2loopback-dkms: V4L2 virtual camera output
-	optdepends = obs-source-profiler: Profile the Usages of your Sources
+	optdepends = obs-source-profiler-bin: Profile the Usages of your Sources
 	optdepends = obs-vertical-canvas-bin: For Dual Format Beta
 	provides = obs-studio=32.0.1
 	provides = obs-vst
