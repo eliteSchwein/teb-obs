@@ -1,19 +1,19 @@
 # Maintainer: Thomas Ludwig <business at tludwig dot dev>
 
 pkgname=teb-obs
-pkgver=32.0.1
-pkgrel=3
+pkgver=32.0.4
+pkgrel=1
 pkgdesc="Free, open source software for live streaming and recording. With Browser Source support. Without the need to install ffmpeg-obs, etc."
 arch=('x86_64')
 url="https://github.com/amazon-contributing/upstreaming-to-obs-studio/wiki/TEB-Beta-Linux-Installation"
 license=('GPL-2.0-or-later')
-_obsversion="32.0.1-enhanced-broadcasting-v60"
-_obsversionbranch="release/v60"
+_obsversion="32.0.4-enhanced-broadcasting-v61"
+_obsversionbranch="release/v61"
 _qtver=6.10.0
 _libajantv2ver=17.5.0
-_libdatachannelver=0.23
+_libdatachannelver=0.24
 _mbedtlsver=3.6.1
-_pythonver=3.13
+_pythonver=3.14
 _cefver=cef_binary_6533_linux_x86_64_v6
 depends=(
   "alsa-lib" # Deps of ALSA plugin and CEF
